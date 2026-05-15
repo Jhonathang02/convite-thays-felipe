@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thays & Felipe · 31.10.2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --B:  #4E8BB8;
+  --BD: #2C5F82;
+  --BM: #3A7499;
+  --BP: #D6E9F5;
+  --BS: #EEF5FB;
+  --INK: #18303F;
+  --IV: #F7F5EF;
+  --GOLD: #C8A96E;
+  --GOLD2: #A88448;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{min-height:100vh;}
+body{
+  background:var(--IV);
+  background-image:
+    radial-gradient(ellipse 80% 40% at 15% 20%, rgba(78,139,184,.05) 0%,transparent 65%),
+    radial-gradient(ellipse 60% 50% at 85% 80%, rgba(44,95,130,.04) 0%,transparent 65%);
+  font-family:'Cormorant Garamond',Georgia,serif;
+  overflow-x:hidden;
+}
+.page{max-width:420px;margin:0 auto;position:relative;}
+
+/* ── SCREENS ─────────────────────────────── */
+.screen{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding-bottom:48px;
+  transition:opacity .65s ease,transform .65s ease;
+}
+.screen.out{
+  opacity:0;transform:scale(.97);
+  pointer-events:none;
+  position:absolute;top:0;left:0;width:100%;
+}
+
+/* ── FLORAL TOP ──────────────────────────── */
+.floral-top{
+  width:100%;
+  margin-bottom:-22px;
+  position:relative;z-index:1;
+}
+.floral-top svg{display:block;width:100%;}
+
+/* ── BADGE ───────────────────────────────── */
+.badge{
+  width:50px;height:60px;
+  background:linear-gradient(160deg,#5A9AC4 0%,var(--BD) 100%);
+  clip-path:polygon(50% 0%,100% 22%,100% 78%,50% 100%,0% 78%,0% 22%);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+  position:relative;z-index:2;
+  box-shadow:0 4px 16px rgba(44,95,130,.35);
+}
+.badge span{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-style:italic;font-size:14px;
+  color:rgba(255,255,255,.95);letter-spacing:.04em;
+}
+
+/* ── INVITE TEXT ─────────────────────────── */
+.invite-text{text-align:center;margin-bottom:12px;}
+.invite-text p:first-child{
+  font-size:9.5px;letter-spacing:.16em;
+  color:rgba(58,116,153,.60);font-weight:300;margin-bottom:3px;
+}
+.invite-text p:last-child{
+  font-size:12px;letter-spacing:.26em;
+  color:var(--INK);font-weight:400;text-transform:uppercase;
+}
+
+/* ── NAMES ───────────────────────────────── */
+.names{
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(48px,13vw,60px);
+  color:var(--INK);text-align:center;
+  line-height:1.0;margin-bottom:26px;
+  text-shadow:0 2px 18px rgba(44,95,130,.07);
+}
+.names.sm{
+  font-size:clamp(38px,10vw,48px);
+  margin-bottom:6px;
+}
+
+/* ── ENVELOPE ────────────────────────────── */
+.env-section{
+  width:calc(100% - 24px);max-width:360px;
+  position:relative;
+}
+.env-perspective{perspective:800px;position:relative;}
+
+/* Body (static SVG) */
+.env-body{width:100%;position:relative;}
+.env-body svg{display:block;width:100%;border-radius:5px;
+  box-shadow:0 8px 32px rgba(44,95,130,.28),0 2px 8px rgba(44,95,130,.15);}
+
+/* Flap (animated HTML div over SVG top ~53%) */
+.env-flap{
+  position:absolute;top:0;left:0;right:0;
+  height:53%;
+  transform-origin:center top;
+  transform-style:preserve-3d;
+  transition:transform .72s cubic-bezier(.4,0,.2,1);
+  z-index:4;
+  border-radius:5px 5px 0 0;
+  overflow:hidden;
+}
+.env-flap.open{transform:rotateX(-178deg);}
+.env-flap-inner{
+  width:100%;height:100%;
+  background:linear-gradient(170deg,#305F7A 0%,var(--BD) 100%);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  position:relative;
+}
+.env-flap-inner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom right,rgba(255,255,255,.09) 0%,transparent 55%);
+  clip-path:inherit;
+}
+
+/* "Abra aqui!" text */
+.abra{
+  position:absolute;top:20%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(15px,4.2vw,19px);
+  color:rgba(255,255,255,.68);
+  z-index:5;pointer-events:none;white-space:nowrap;
+}
+
+/* Seal */
+.seal-wrap{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-5%);
+  z-index:6;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.seal-el{
+  width:clamp(72px,19vw,88px);height:clamp(72px,19vw,88px);
+  filter:drop-shadow(0 4px 14px rgba(100,70,20,.40)) drop-shadow(0 1px 4px rgba(100,70,20,.22));
+  transition:transform .22s ease,filter .22s ease;
+  display:block;
+}
+.seal-el:hover{transform:scale(1.05);filter:drop-shadow(0 7px 20px rgba(100,70,20,.50));}
+@keyframes sbreak{
+  0%  {transform:rotate(0)   scale(1);}
+  14% {transform:rotate(-4deg) scale(1.07);}
+  28% {transform:rotate(4deg) scale(1.11);}
+  44% {transform:rotate(-3deg) scale(1.08);}
+  60% {transform:rotate(2deg) scale(1.04);}
+  78% {transform:rotate(-1deg) scale(1.02);}
+  100%{transform:rotate(0) scale(0);opacity:0;}
+}
+.seal-el.breaking{animation:sbreak .58s ease forwards;pointer-events:none;}
+
+/* Bottom flowers */
+.floral-bot{
+  width:100%;margin-top:-30px;
+  position:relative;z-index:7;
+}
+.floral-bot svg{display:block;width:100%;}
+
+/* Hint */
+.hint{
+  font-size:8px;letter-spacing:.22em;
+  color:rgba(78,139,184,.42);text-transform:uppercase;
+  animation:hb 2.8s ease-in-out infinite;margin-top:2px;
+}
+@keyframes hb{0%,100%{opacity:.42;}50%{opacity:.82;}}
+
+/* ── SCREEN 2 ─────────────────────────────── */
+.s2-top{width:100%;margin-bottom:-10px;position:relative;z-index:1;}
+.s2-top svg{display:block;width:100%;}
+
+.date-row{
+  display:flex;align-items:center;gap:18px;
+  margin:20px 0 22px;
+}
+.date-val{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(20px,5.5vw,26px);font-weight:500;color:var(--INK);
+}
+.date-bar{width:1.5px;height:34px;background:rgba(78,139,184,.45);border-radius:1px;}
+
+.rule{
+  width:min(280px,80%);display:flex;align-items:center;gap:8px;margin:4px auto 20px;
+}
+.rl{flex:1;height:.4px;background:rgba(58,116,153,.28);}
+.rg{width:7px;height:7px;background:rgba(58,116,153,.35);transform:rotate(45deg);flex-shrink:0;position:relative;}
+.rg::before{content:'';position:absolute;inset:2px;background:var(--IV);}
+
+.loc-block{text-align:center;margin-bottom:26px;}
+.loc-lbl{font-size:8px;letter-spacing:.28em;color:rgba(58,116,153,.50);text-transform:uppercase;font-weight:300;margin-bottom:8px;}
+.loc-main{font-size:clamp(13px,3.4vw,15px);font-weight:500;color:var(--INK);margin-bottom:4px;}
+.loc-sub{font-size:clamp(9.5px,2.4vw,11px);color:rgba(26,47,64,.48);font-weight:300;}
+
+.links-lbl{
+  font-size:8.5px;letter-spacing:.22em;
+  color:rgba(58,116,153,.55);text-transform:uppercase;
+  font-weight:400;margin-bottom:22px;text-align:center;
+}
+.circles{display:flex;gap:28px;justify-content:center;margin-bottom:40px;}
+.cbtn{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  text-decoration:none;cursor:pointer;
+  will-change:transform;transform:translate3d(0,0,0);
+  transition:transform .20s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.cbtn:hover{transform:translate3d(0,-3px,0);}
+.cbtn:active{transform:translate3d(0,-1px,0);}
+.circ{
+  width:clamp(70px,18vw,82px);height:clamp(70px,18vw,82px);
+  border-radius:50%;background:var(--B);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 18px rgba(44,95,130,.32);
+  position:relative;
+  transition:box-shadow .20s ease,filter .20s ease;
+}
+.circ::before{
+  content:'';position:absolute;inset:4px;border-radius:50%;
+  border:.5px solid rgba(255,255,255,.22);
+}
+.cbtn:hover .circ{box-shadow:0 8px 26px rgba(44,95,130,.44);filter:brightness(1.06);}
+.circ svg{width:30px;height:30px;}
+.circ-lbl{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:11.5px;letter-spacing:.05em;
+  color:var(--INK);text-align:center;font-weight:400;
+  line-height:1.35;max-width:85px;
+}
+
+/* Stagger */
+.fi{opacity:0;transform:translateY(16px);transition:opacity .62s ease,transform .62s ease;}
+.fi.show{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ═══════════════════════════════════
+     SCREEN 1
+═══════════════════════════════════ -->
+<div class="screen" id="s1">
+
+<!-- FLORAL TOP (large arrangement) -->
+<div class="floral-top">
+<svg viewBox="0 0 420 165" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- LEAVES – background layer -->
+  <!-- Long sweeping leaves -->
+  <path d="M210 155 C175 110 130 75 80 50" stroke="rgba(58,116,153,.40)" stroke-width="1.2" fill="none"/>
+  <path d="M210 155 C245 110 290 75 340 50" stroke="rgba(58,116,153,.40)" stroke-width="1.2" fill="none"/>
+  <!-- Left branch leaves -->
+  <ellipse cx="95"  cy="62"  rx="6" ry="22" transform="rotate(-42 95 62)"  fill="rgba(58,116,153,.38)"/>
+  <ellipse cx="72"  cy="48"  rx="5" ry="18" transform="rotate(-55 72 48)"  fill="rgba(78,139,184,.30)"/>
+  <ellipse cx="118" cy="72"  rx="5" ry="20" transform="rotate(-28 118 72)" fill="rgba(58,116,153,.32)"/>
+  <ellipse cx="52"  cy="75"  rx="4" ry="15" transform="rotate(-65 52 75)"  fill="rgba(78,139,184,.28)"/>
+  <ellipse cx="145" cy="85"  rx="4" ry="16" transform="rotate(-18 145 85)" fill="rgba(58,116,153,.30)"/>
+  <!-- Right branch leaves -->
+  <ellipse cx="325" cy="62"  rx="6" ry="22" transform="rotate(42 325 62)"  fill="rgba(58,116,153,.38)"/>
+  <ellipse cx="348" cy="48"  rx="5" ry="18" transform="rotate(55 348 48)"  fill="rgba(78,139,184,.30)"/>
+  <ellipse cx="302" cy="72"  rx="5" ry="20" transform="rotate(28 302 72)"  fill="rgba(58,116,153,.32)"/>
+  <ellipse cx="368" cy="75"  rx="4" ry="15" transform="rotate(65 368 75)"  fill="rgba(78,139,184,.28)"/>
+  <ellipse cx="275" cy="85"  rx="4" ry="16" transform="rotate(18 275 85)"  fill="rgba(58,116,153,.30)"/>
+  <!-- Center leaves -->
+  <ellipse cx="185" cy="88"  rx="4" ry="15" transform="rotate(-12 185 88)" fill="rgba(78,139,184,.28)"/>
+  <ellipse cx="235" cy="88"  rx="4" ry="15" transform="rotate(12 235 88)"  fill="rgba(78,139,184,.28)"/>
+
+  <!-- SMALL BUDS scattered -->
+  <!-- Bud: small teardrop -->
+  <g transform="translate(46,88)"><ellipse rx="5" ry="8" cy="-6" fill="rgba(214,233,245,.82)"/><ellipse rx="3" ry="5" cy="-4" fill="rgba(168,196,216,.90)"/><circle r="2" fill="rgba(78,139,184,.65)"/></g>
+  <g transform="translate(160,108)"><ellipse rx="4" ry="7" cy="-5" fill="rgba(255,255,255,.78)"/><ellipse rx="2.5" ry="4" cy="-3.5" fill="rgba(214,233,245,.88)"/><circle r="1.8" fill="rgba(78,139,184,.60)"/></g>
+  <g transform="translate(374,88)"><ellipse rx="5" ry="8" cy="-6" fill="rgba(214,233,245,.82)"/><ellipse rx="3" ry="5" cy="-4" fill="rgba(168,196,216,.90)"/><circle r="2" fill="rgba(78,139,184,.65)"/></g>
+  <g transform="translate(260,108)"><ellipse rx="4" ry="7" cy="-5" fill="rgba(255,255,255,.78)"/><ellipse rx="2.5" ry="4" cy="-3.5" fill="rgba(214,233,245,.88)"/><circle r="1.8" fill="rgba(78,139,184,.60)"/></g>
+  <g transform="translate(30,112)"><ellipse rx="4" ry="7" cy="-5" fill="rgba(214,233,245,.72)"/><circle r="1.6" fill="rgba(78,139,184,.55)"/></g>
+  <g transform="translate(390,112)"><ellipse rx="4" ry="7" cy="-5" fill="rgba(214,233,245,.72)"/><circle r="1.6" fill="rgba(78,139,184,.55)"/></g>
+
+  <!-- ── ROSE macro ── r=26 at (82,105) -->
+  <g transform="translate(82,107)">
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(288)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(36)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(108)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(252)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(324)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(90)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(270)"/>
+    <circle r="4.5" fill="rgba(78,139,184,.52)"/><circle r="2.5" fill="rgba(58,116,153,.70)"/>
+  </g>
+
+  <!-- ── ROSE large center at (210,92) -->
+  <g transform="translate(210,92)">
+    <ellipse cx="0" cy="-20" rx="10" ry="18" fill="rgba(255,255,255,.90)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="18" fill="rgba(255,255,255,.90)" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="18" fill="rgba(255,255,255,.90)" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="18" fill="rgba(255,255,255,.90)" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-20" rx="10" ry="18" fill="rgba(255,255,255,.90)" transform="rotate(288)"/>
+    <ellipse cx="0" cy="-12" rx="7.5" ry="13" fill="rgba(214,233,245,.92)" transform="rotate(36)"/>
+    <ellipse cx="0" cy="-12" rx="7.5" ry="13" fill="rgba(214,233,245,.92)" transform="rotate(108)"/>
+    <ellipse cx="0" cy="-12" rx="7.5" ry="13" fill="rgba(214,233,245,.92)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-12" rx="7.5" ry="13" fill="rgba(214,233,245,.92)" transform="rotate(252)"/>
+    <ellipse cx="0" cy="-12" rx="7.5" ry="13" fill="rgba(214,233,245,.92)" transform="rotate(324)"/>
+    <ellipse cx="0" cy="-7"  rx="5"   ry="9"  fill="rgba(168,196,216,.90)"/>
+    <ellipse cx="0" cy="-7"  rx="5"   ry="9"  fill="rgba(168,196,216,.90)" transform="rotate(90)"/>
+    <ellipse cx="0" cy="-7"  rx="5"   ry="9"  fill="rgba(168,196,216,.90)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-7"  rx="5"   ry="9"  fill="rgba(168,196,216,.90)" transform="rotate(270)"/>
+    <circle r="6" fill="rgba(78,139,184,.50)"/><circle r="3.5" fill="rgba(58,116,153,.68)"/>
+  </g>
+
+  <!-- ── ROSE at (338,107) -->
+  <g transform="translate(338,107)">
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-16" rx="8"  ry="15" fill="rgba(255,255,255,.86)" transform="rotate(288)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(36)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(108)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(252)"/>
+    <ellipse cx="0" cy="-10" rx="6"  ry="10" fill="rgba(214,233,245,.90)" transform="rotate(324)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(90)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-5"  rx="4"  ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(270)"/>
+    <circle r="4.5" fill="rgba(78,139,184,.52)"/><circle r="2.5" fill="rgba(58,116,153,.70)"/>
+  </g>
+
+  <!-- Small roses flanking -->
+  <g transform="translate(148,120)">
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(288)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(36)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(108)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(252)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(324)"/>
+    <circle r="3.5" fill="rgba(78,139,184,.52)"/><circle r="2" fill="rgba(58,116,153,.70)"/>
+  </g>
+  <g transform="translate(272,120)">
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(72)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(144)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(216)"/>
+    <ellipse cx="0" cy="-11" rx="6" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(288)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(36)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(108)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(180)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(252)"/>
+    <ellipse cx="0" cy="-6" rx="4"  ry="7"  fill="rgba(214,233,245,.88)" transform="rotate(324)"/>
+    <circle r="3.5" fill="rgba(78,139,184,.52)"/><circle r="2" fill="rgba(58,116,153,.70)"/>
+  </g>
+</svg>
+</div><!-- /floral-top -->
+
+<!-- BADGE -->
+<div class="badge"><span>T & F</span></div>
+
+<!-- TEXT -->
+<div class="invite-text">
+  <p>Você está convidado para o</p>
+  <p>Casamento de:</p>
+</div>
+
+<!-- NAMES -->
+<h1 class="names">Thays &amp; Felipe</h1>
+
+<!-- ENVELOPE SECTION -->
+<div class="env-section">
+  <div class="env-perspective">
+
+    <!-- Static envelope body -->
+    <div class="env-body">
+      <svg viewBox="0 0 360 232" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="ebg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#4E8BB8"/>
+            <stop offset="100%" stop-color="#3A7499"/>
+          </linearGradient>
+        </defs>
+        <!-- Envelope base -->
+        <rect width="360" height="232" rx="5" fill="url(#ebg)"/>
+        <!-- Subtle texture lines -->
+        <path d="M 0 0 L 360 232" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
+        <path d="M 360 0 L 0 232" stroke="rgba(255,255,255,.04)" stroke-width=".8"/>
+        <!-- Left fold -->
+        <path d="M 0 0 L 0 232 L 180 116 Z" fill="rgba(44,95,130,.30)"/>
+        <!-- Right fold -->
+        <path d="M 360 0 L 360 232 L 180 116 Z" fill="rgba(44,95,130,.30)"/>
+        <!-- Bottom fold -->
+        <path d="M 0 232 L 360 232 L 180 116 Z" fill="rgba(30,75,108,.35)"/>
+        <!-- Fold line accents -->
+        <line x1="0" y1="0" x2="180" y2="116" stroke="rgba(255,255,255,.10)" stroke-width=".6"/>
+        <line x1="360" y1="0" x2="180" y2="116" stroke="rgba(255,255,255,.10)" stroke-width=".6"/>
+        <line x1="0" y1="232" x2="180" y2="116" stroke="rgba(255,255,255,.08)" stroke-width=".6"/>
+        <line x1="360" y1="232" x2="180" y2="116" stroke="rgba(255,255,255,.08)" stroke-width=".6"/>
+      </svg>
+    </div>
+
+    <!-- Animated flap -->
+    <div class="env-flap" id="flap">
+      <div class="env-flap-inner"></div>
+    </div>
+
+    <!-- "Abra aqui!" text -->
+    <div class="abra">Abra aqui!</div>
+
+    <!-- SEAL -->
+    <div class="seal-wrap">
+      <svg class="seal-el" id="seal" viewBox="-44 -44 88 88" onclick="openIt()">
+        <defs>
+          <radialGradient id="sg" cx="36%" cy="28%" r="68%">
+            <stop offset="0%"   stop-color="#E0C07A"/>
+            <stop offset="48%"  stop-color="#C8A96E"/>
+            <stop offset="100%" stop-color="#8A6830"/>
+          </radialGradient>
+          <radialGradient id="sh" cx="28%" cy="18%" r="58%">
+            <stop offset="0%"  stop-color="rgba(255,255,255,.22)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+        </defs>
+        <!-- Petal ring -->
+        <g opacity=".65">
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(30)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(60)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(90)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(120)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(150)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(180)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(210)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(240)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(270)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(300)"/>
+          <ellipse cx="0" cy="-42" rx="3" ry="5" fill="rgba(200,169,110,.55)" transform="rotate(330)"/>
+        </g>
+        <!-- Dashed ring -->
+        <circle r="38" fill="none" stroke="rgba(200,169,110,.40)" stroke-width=".7" stroke-dasharray="3 3.2"/>
+        <!-- Main disc -->
+        <circle r="35" fill="url(#sg)"/>
+        <circle r="35" fill="url(#sh)"/>
+        <!-- Inner rings -->
+        <circle r="30" fill="none" stroke="rgba(255,255,255,.18)" stroke-width=".6"/>
+        <circle r="24" fill="none" stroke="rgba(255,255,255,.12)" stroke-width=".4"/>
+        <!-- Radial spokes -->
+        <g stroke="rgba(255,255,255,.10)" stroke-width=".5">
+          <line x1="0" y1="-25" x2="0" y2="-32"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(45)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(90)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(135)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(180)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(225)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(270)"/>
+          <line x1="0" y1="-25" x2="0" y2="-32" transform="rotate(315)"/>
+        </g>
+        <!-- Monogram -->
+        <text text-anchor="middle" y="8" font-family="Cormorant Garamond,Georgia" font-style="italic" font-weight="600" font-size="20" fill="rgba(255,248,232,.92)" letter-spacing="1">T &amp; F</text>
+        <!-- Bottom arc date -->
+        <path id="ga" d="M -22 16 A 27 27 0 0 0 22 16" fill="none"/>
+        <text font-family="Cormorant Garamond,Georgia" font-size="6" fill="rgba(255,248,232,.58)" letter-spacing="1">
+          <textPath href="#ga" startOffset="50%" text-anchor="middle">31 · 10 · 2026</textPath>
+        </text>
+      </svg>
+    </div>
+
+  </div><!-- /env-perspective -->
+
+  <!-- BOTTOM FLOWERS (overlap envelope bottom) -->
+  <div class="floral-bot">
+  <svg viewBox="0 0 420 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Stems -->
+    <path d="M210 115 C175 88 130 65 80 42"  stroke="rgba(58,116,153,.38)" stroke-width="1.1" fill="none"/>
+    <path d="M210 115 C245 88 290 65 340 42" stroke="rgba(58,116,153,.38)" stroke-width="1.1" fill="none"/>
+    <path d="M210 115 C210 88 210 60 210 30" stroke="rgba(58,116,153,.32)" stroke-width=".9" fill="none"/>
+    <!-- Leaves -->
+    <ellipse cx="105" cy="56" rx="5" ry="18" transform="rotate(-42 105 56)" fill="rgba(58,116,153,.35)"/>
+    <ellipse cx="76"  cy="45" rx="4" ry="15" transform="rotate(-56 76 45)"  fill="rgba(78,139,184,.28)"/>
+    <ellipse cx="52"  cy="68" rx="3.5" ry="13" transform="rotate(-68 52 68)" fill="rgba(58,116,153,.30)"/>
+    <ellipse cx="315" cy="56" rx="5" ry="18" transform="rotate(42 315 56)"  fill="rgba(58,116,153,.35)"/>
+    <ellipse cx="344" cy="45" rx="4" ry="15" transform="rotate(56 344 45)"  fill="rgba(78,139,184,.28)"/>
+    <ellipse cx="368" cy="68" rx="3.5" ry="13" transform="rotate(68 368 68)" fill="rgba(58,116,153,.30)"/>
+    <ellipse cx="180" cy="55" rx="3.5" ry="14" transform="rotate(-10 180 55)" fill="rgba(78,139,184,.26)"/>
+    <ellipse cx="240" cy="55" rx="3.5" ry="14" transform="rotate(10 240 55)"  fill="rgba(78,139,184,.26)"/>
+
+    <!-- Buds -->
+    <g transform="translate(48,72)"><ellipse cx="0" cy="-7" rx="4.5" ry="7" fill="rgba(214,233,245,.80)"/><ellipse cx="0" cy="-4.5" rx="3" ry="4.5" fill="rgba(168,196,216,.88)"/><circle r="1.8" fill="rgba(78,139,184,.60)"/></g>
+    <g transform="translate(370,72)"><ellipse cx="0" cy="-7" rx="4.5" ry="7" fill="rgba(214,233,245,.80)"/><ellipse cx="0" cy="-4.5" rx="3" ry="4.5" fill="rgba(168,196,216,.88)"/><circle r="1.8" fill="rgba(78,139,184,.60)"/></g>
+    <g transform="translate(155,95)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="rgba(255,255,255,.72)"/><circle r="1.5" fill="rgba(78,139,184,.55)"/></g>
+    <g transform="translate(265,95)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="rgba(255,255,255,.72)"/><circle r="1.5" fill="rgba(78,139,184,.55)"/></g>
+
+    <!-- Rose left -->
+    <g transform="translate(85,72)">
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(324)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(270)"/>
+      <circle r="4" fill="rgba(78,139,184,.50)"/><circle r="2.2" fill="rgba(58,116,153,.68)"/>
+    </g>
+
+    <!-- Rose center-bottom -->
+    <g transform="translate(210,50)">
+      <ellipse cx="0" cy="-16" rx="8" ry="14" fill="rgba(255,255,255,.88)"/>
+      <ellipse cx="0" cy="-16" rx="8" ry="14" fill="rgba(255,255,255,.88)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-16" rx="8" ry="14" fill="rgba(255,255,255,.88)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-16" rx="8" ry="14" fill="rgba(255,255,255,.88)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-16" rx="8" ry="14" fill="rgba(255,255,255,.88)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-10" rx="6" ry="10" fill="rgba(214,233,245,.92)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-10" rx="6" ry="10" fill="rgba(214,233,245,.92)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-10" rx="6" ry="10" fill="rgba(214,233,245,.92)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-10" rx="6" ry="10" fill="rgba(214,233,245,.92)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-10" rx="6" ry="10" fill="rgba(214,233,245,.92)" transform="rotate(324)"/>
+      <ellipse cx="0" cy="-6"  rx="4" ry="7"  fill="rgba(168,196,216,.88)"/>
+      <ellipse cx="0" cy="-6"  rx="4" ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-6"  rx="4" ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-6"  rx="4" ry="7"  fill="rgba(168,196,216,.88)" transform="rotate(270)"/>
+      <circle r="4.5" fill="rgba(78,139,184,.50)"/><circle r="2.5" fill="rgba(58,116,153,.68)"/>
+    </g>
+
+    <!-- Rose right -->
+    <g transform="translate(335,72)">
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-14" rx="7" ry="13" fill="rgba(255,255,255,.85)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-9"  rx="5" ry="9"  fill="rgba(214,233,245,.90)" transform="rotate(324)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-5"  rx="3.5" ry="6" fill="rgba(168,196,216,.88)" transform="rotate(270)"/>
+      <circle r="4" fill="rgba(78,139,184,.50)"/><circle r="2.2" fill="rgba(58,116,153,.68)"/>
+    </g>
+  </svg>
+  </div>
+
+</div><!-- /env-section -->
+
+<p class="hint">toque no selo para abrir</p>
+</div><!-- /screen 1 -->
+
+
+<!-- ═══════════════════════════════════
+     SCREEN 2
+═══════════════════════════════════ -->
+<div class="screen out" id="s2">
+
+  <!-- Compact floral top -->
+  <div class="s2-top">
+  <svg viewBox="0 0 420 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M210 110 C175 80 130 55 82 32"  stroke="rgba(58,116,153,.35)" stroke-width="1" fill="none"/>
+    <path d="M210 110 C245 80 290 55 338 32" stroke="rgba(58,116,153,.35)" stroke-width="1" fill="none"/>
+    <ellipse cx="102" cy="44" rx="4.5" ry="16" transform="rotate(-42 102 44)" fill="rgba(58,116,153,.32)"/>
+    <ellipse cx="78"  cy="34" rx="3.5" ry="13" transform="rotate(-55 78 34)"  fill="rgba(78,139,184,.26)"/>
+    <ellipse cx="318" cy="44" rx="4.5" ry="16" transform="rotate(42 318 44)"  fill="rgba(58,116,153,.32)"/>
+    <ellipse cx="342" cy="34" rx="3.5" ry="13" transform="rotate(55 342 34)"  fill="rgba(78,139,184,.26)"/>
+    <!-- Small roses -->
+    <g transform="translate(88,58)">
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(324)"/>
+      <circle r="3.5" fill="rgba(78,139,184,.50)"/>
+    </g>
+    <g transform="translate(210,48)">
+      <ellipse cx="0" cy="-13" rx="7" ry="12" fill="rgba(255,255,255,.85)"/>
+      <ellipse cx="0" cy="-13" rx="7" ry="12" fill="rgba(255,255,255,.85)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-13" rx="7" ry="12" fill="rgba(255,255,255,.85)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-13" rx="7" ry="12" fill="rgba(255,255,255,.85)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-13" rx="7" ry="12" fill="rgba(255,255,255,.85)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-8"  rx="5" ry="8.5" fill="rgba(214,233,245,.90)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-8"  rx="5" ry="8.5" fill="rgba(214,233,245,.90)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-8"  rx="5" ry="8.5" fill="rgba(214,233,245,.90)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-8"  rx="5" ry="8.5" fill="rgba(214,233,245,.90)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-8"  rx="5" ry="8.5" fill="rgba(214,233,245,.90)" transform="rotate(324)"/>
+      <ellipse cx="0" cy="-4.5" rx="3.5" ry="5.5" fill="rgba(168,196,216,.86)"/>
+      <ellipse cx="0" cy="-4.5" rx="3.5" ry="5.5" fill="rgba(168,196,216,.86)" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-4.5" rx="3.5" ry="5.5" fill="rgba(168,196,216,.86)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-4.5" rx="3.5" ry="5.5" fill="rgba(168,196,216,.86)" transform="rotate(270)"/>
+      <circle r="4" fill="rgba(78,139,184,.50)"/><circle r="2.2" fill="rgba(58,116,153,.68)"/>
+    </g>
+    <g transform="translate(332,58)">
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-10" rx="5.5" ry="10" fill="rgba(255,255,255,.82)" transform="rotate(288)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(36)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(108)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(252)"/>
+      <ellipse cx="0" cy="-6"  rx="3.5" ry="6.5" fill="rgba(214,233,245,.88)" transform="rotate(324)"/>
+      <circle r="3.5" fill="rgba(78,139,184,.50)"/>
+    </g>
+    <g transform="translate(46,82)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="rgba(214,233,245,.72)"/><circle r="1.5" fill="rgba(78,139,184,.55)"/></g>
+    <g transform="translate(374,82)"><ellipse cx="0" cy="-6" rx="3.5" ry="6" fill="rgba(214,233,245,.72)"/><circle r="1.5" fill="rgba(78,139,184,.55)"/></g>
+  </svg>
+  </div>
+
+  <!-- Compact badge -->
+  <div class="badge" style="width:44px;height:52px;margin-bottom:12px;"><span>T & F</span></div>
+
+  <!-- Invite text (compact) -->
+  <div class="invite-text fi" id="d0">
+    <p>Você está convidado para o</p>
+    <p>Casamento de:</p>
+  </div>
+
+  <!-- Names (smaller) -->
+  <h1 class="names sm fi" id="d1">Thays &amp; Felipe</h1>
+
+  <!-- Date row -->
+  <div class="date-row fi" id="d2">
+    <span class="date-val">31 de Outubro</span>
+    <div class="date-bar"></div>
+    <span class="date-val">12h00</span>
+  </div>
+
+  <!-- Rule -->
+  <div class="rule fi" id="d3"><div class="rl"></div><div class="rg"></div><div class="rl"></div></div>
+
+  <!-- Location -->
+  <div class="loc-block fi" id="d4">
+    <div class="loc-lbl">L o c a l</div>
+    <div class="loc-main">Estrada Maria Cristina, 200</div>
+    <div class="loc-sub">Eldorado &nbsp;·&nbsp; Diadema &nbsp;·&nbsp; SP &nbsp;·&nbsp; CEP 09971420</div>
+  </div>
+
+  <!-- Rule -->
+  <div class="rule fi" id="d5"><div class="rl"></div><div class="rg"></div><div class="rl"></div></div>
+
+  <!-- Links label -->
+  <p class="links-lbl fi" id="d6">Links que vão te ajudar!</p>
+
+  <!-- Circular buttons -->
+  <div class="circles fi" id="d7">
+
+    <div class="cbtn" onclick="goTo('https://www.google.com/maps/search/?api=1&query=Estrada+Maria+Cristina+200+Eldorado+Diadema+SP+09971420')">
+      <div class="circ">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 3C10.58 3 7 6.58 7 11C7 16.5 15 27 15 27C15 27 23 16.5 23 11C23 6.58 19.42 3 15 3Z" fill="rgba(255,255,255,.92)"/>
+          <circle cx="15" cy="11" r="3.5" fill="rgba(78,139,184,.70)"/>
+        </svg>
+      </div>
+      <span class="circ-lbl">Como Chegar</span>
+    </div>
+
+    <div class="cbtn" onclick="goTo('https://noivos.casar.com/thays-e-felipe-2026-10-29')">
+      <div class="circ">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="15" r="6.5" stroke="rgba(255,255,255,.90)" stroke-width="1.8"/>
+          <circle cx="19" cy="15" r="6.5" stroke="rgba(255,255,255,.90)" stroke-width="1.8"/>
+        </svg>
+      </div>
+      <span class="circ-lbl">Site do Casal</span>
+    </div>
+
+  </div>
+
+  <!-- Footer URL -->
+  <p class="fi" id="d8" style="font-size:8px;letter-spacing:.10em;color:rgba(78,139,184,.30);text-align:center;margin-top:4px;">
+    noivos.casar.com/thays-e-felipe-2026-10-29
+  </p>
+
+</div><!-- /screen 2 -->
+</div><!-- /page -->
+
+<script>
+function goTo(url){
+  var w=window.open(url,'_blank');
+  if(!w||w.closed||typeof w.closed==='undefined'){window.location.href=url;}
+}
+function openIt(){
+  const seal=document.getElementById('seal');
+  const flap=document.getElementById('flap');
+  const s1=document.getElementById('s1');
+  const s2=document.getElementById('s2');
+
+  // Shake seal
+  seal.classList.add('breaking');
+
+  // Open flap after 360ms
+  setTimeout(()=>{ flap.classList.add('open'); }, 360);
+
+  // Transition screens after 900ms
+  setTimeout(()=>{
+    s1.classList.add('out');
+    s2.classList.remove('out');
+
+    // Stagger items in
+    ['d0','d1','d2','d3','d4','d5','d6','d7','d8'].forEach((id,i)=>{
+      setTimeout(()=>{
+        const el=document.getElementById(id);
+        if(el) el.classList.add('show');
+      }, 60 + i*100);
+    });
+  }, 920);
+}
+</script>
+</body>
+</html>
